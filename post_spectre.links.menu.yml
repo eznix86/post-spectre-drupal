@@ -1,0 +1,6 @@
+post_spectre.settings_form:
+  title: post_spectre
+  description: Configure post_spectre.
+  parent: system.admin_config_system
+  route_name: post_spectre.settings_form
+  weight: 10

@@ -1,0 +1,4 @@
+administer post_spectre configuration:
+  title: 'Administer post_spectre configuration'
+  description: 'Optional description.'
+  restrict access: true
