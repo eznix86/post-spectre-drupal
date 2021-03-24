@@ -1,0 +1,15 @@
+post_spectre.example:
+  path: '/post-spectre/example'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\post_spectre\Controller\PostSpectreController::build'
+  requirements:
+    _permission: 'access content'
+
+post_spectre.settings_form:
+  path: '/admin/config/system/post-spectre'
+  defaults:
+    _title: 'post_spectre settings'
+    _form: 'Drupal\post_spectre\Form\SettingsForm'
+  requirements:
+    _permission: 'administer post_spectre configuration'
