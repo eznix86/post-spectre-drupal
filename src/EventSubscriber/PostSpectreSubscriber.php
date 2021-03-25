@@ -43,7 +43,6 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
       // Add default headers for documents for post spectre
       $response->setVary('Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User');
       $headers = [
-          'Cross-Origin-Opener-Policy' => 'same-origin',
           'Cross-Origin-Resource-Policy' => 'same-origin',
           'X-Content-Type-Options' => 'nosniff',
           'X-Frame-Options' => 'SAMEORIGIN'
