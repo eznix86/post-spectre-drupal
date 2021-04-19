@@ -1,6 +1,6 @@
 services:
   post_spectre.event_subscriber:
     class: Drupal\post_spectre\EventSubscriber\PostSpectreSubscriber
-    arguments: ['@messenger']
+    arguments: []
     tags:
       - { name: event_subscriber }
