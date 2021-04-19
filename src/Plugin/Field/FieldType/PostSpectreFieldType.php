@@ -25,7 +25,7 @@ class PostSpectreFieldType extends FieldItemBase {
      */
     public static function defaultFieldSettings() {
         return [
-                'status' => FALSE,
+                'opt_out' => FALSE,
             ] + parent::defaultFieldSettings();
     }
 
@@ -33,7 +33,18 @@ class PostSpectreFieldType extends FieldItemBase {
      * {@inheritdoc}
      */
     public static function schema(FieldStorageDefinitionInterface $field_definition) {
-        return [];
+        return [
+            'columns' => [
+                'opt_out' => [
+                    'type' => 'text',
+                    'not null' => FALSE,
+                ],
+                'post_spectre_type' => [
+                    'type' => 'text',
+                    'not null' => FALSE,
+                ]
+            ]
+        ];
     }
 
     /**
@@ -42,21 +53,14 @@ class PostSpectreFieldType extends FieldItemBase {
     public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
         $properties = [];
 
+        $properties['opt_out'] = DataDefinition::create('string')
+            ->setLabel(t('Opt-out from post spectre'))
+            ->setRequired(FALSE);
+
+        $properties['post_spectre_type'] = DataDefinition::create('string')
+            ->setLabel(t('Post spectre type secure'))
+            ->setRequired(FALSE);
+
         return $properties;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isEmpty() {
-        $status = $this->get('status')->getValue();
-        $enabled = FALSE;
-
-        if (isset($status)) {
-            $enabled = TRUE;
-        }
-
-        return !$enabled;
-    }
-
 }

@@ -32,21 +32,18 @@ class PostSpectreFieldWidget extends WidgetBase implements WidgetInterface {
 
         $element['#uid'] = Html::getUniqueId('post_spectre-' . $this->fieldDefinition->getName());
 
-        $element['opt-out'] = [
+        $element['opt_out'] = [
             '#type' => 'checkbox',
             '#title' => $this->t('Opt-out'),
-            '#default_value' => isset($items[$delta]->status) ? $items[$delta]->status : 0,
+            '#default_value' => isset($items[$delta]->opt_out) ? $items[$delta]->opt_out : 0,
             '#return_value' => 1,
             '#description' => $this->t('Disable post spectre security for this content'),
         ];
 
-        $element['set_of_radiobuttons_cross_origin'] = array(
-            '#type' => 'fieldset',
+        $element['post_spectre_type'] = array(
             '#title' => $this->t('Cross Origin'),
-        );
-
-        $element['set_of_radiobuttons_cross_origin']['radio_buttons'] = array(
             '#type' => 'radios',
+            '#default_value' => isset($items[$delta]->post_spectre_type) ? $items[$delta]->post_spectre_type :  PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW,
             '#options' => array(
                 PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW => t('A. Open Cross-Origin Windows (Allow content to be opened in a new window)'),
                 PostSpectreType::CROSS_ORIGIN_OPENERS => t('B. Cross-Origin Openers (Allow Federated sign-in forms involving payments or sign-in)'),
