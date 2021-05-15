@@ -47,8 +47,8 @@ class PostSpectreFieldWidget extends WidgetBase implements WidgetInterface {
             '#options' => array(
                 PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW => t('A. Open Cross-Origin Windows (Allow content to be opened in a new window)'),
                 PostSpectreType::CROSS_ORIGIN_OPENERS => t('B. Cross-Origin Openers (Allow Federated sign-in forms involving payments or sign-in)'),
-                PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME => t('B (i). Cross-Origin Openers (Allow content to be framed - iframe)'),
-                PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP => t('B (ii). Cross-Origin Openers (Allow content to be opened in a pop-up)')
+                PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME => t('C (i). Cross-Origin Openers (Allow content to be framed - iframe)'),
+                PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP => t('C (ii). Cross-Origin Openers (Allow content to be opened in a pop-up)')
             ),
         );
 

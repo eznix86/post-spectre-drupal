@@ -35,7 +35,6 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
 
     $response = $event->getResponse();
     $request = $event->getRequest();
-    $response = $this->addDefaultPostSpectreHeaders($response);
 
     // Prevent pages like "edit", "revisions", etc from being redirected.
     $is_node = $request->attributes->get('_route') == 'entity.node.canonical';
@@ -67,6 +66,24 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
         $response->setStatusCode(Response::HTTP_FORBIDDEN);
     }
 
+    $postSpectreType = $node->get($post_spectre_custom_field)->post_spectre_type;
+    $response = $this->addDefaultPostSpectreHeaders($response);
+
+    switch ($postSpectreType) {
+        case Drupal\post_spectre\Constant\PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME:
+            $response->headers->set('X-Frame-Options', 'ALLOWALL');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP:
+            $response->headers->set('Cross-Origin-Opener-Policy', 'unsafe-none');
+            $response->headers->set('X-Frame-Options', 'ALLOWALL');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::CROSS_ORIGIN_OPENERS:
+            $response->headers->set('Cross-Origin-Opener-Policy', 'unsafe-none');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW:
+            $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+    }
+
     $event->setResponse($response);
   }
 
@@ -96,7 +113,6 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
   public function allowRequestWithFetchMetadata(Request $request): bool {
     $headers = $request->headers->all();
     $headerKeys = array_keys($request->headers->all());
-    //TODO: Exempt paths/endpoints meant to be served cross-origin.
 
     // Allow requests from browsers which don't send Fetch Metadata
     if (in_array('sec-fetch-site', $headerKeys)) {
