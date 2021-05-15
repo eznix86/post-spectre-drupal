@@ -32,7 +32,7 @@ class PostSpectreFieldWidget extends WidgetBase implements WidgetInterface {
 
         $element['#uid'] = Html::getUniqueId('post_spectre-' . $this->fieldDefinition->getName());
 
-        $element['opt_out'] = [
+        $element[PostSpectreType::OPT_OUT] = [
             '#type' => 'checkbox',
             '#title' => $this->t('Opt-out'),
             '#default_value' => isset($items[$delta]->opt_out) ? $items[$delta]->opt_out : 0,
@@ -40,15 +40,15 @@ class PostSpectreFieldWidget extends WidgetBase implements WidgetInterface {
             '#description' => $this->t('Disable post spectre security for this content'),
         ];
 
-        $element['post_spectre_type'] = array(
+        $element[PostSpectreType::POST_SPECTRE_TYPE] = array(
             '#title' => $this->t('Cross Origin'),
             '#type' => 'radios',
             '#default_value' => isset($items[$delta]->post_spectre_type) ? $items[$delta]->post_spectre_type :  PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW,
             '#options' => array(
                 PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW => t('A. Open Cross-Origin Windows (Allow content to be opened in a new window)'),
                 PostSpectreType::CROSS_ORIGIN_OPENERS => t('B. Cross-Origin Openers (Allow Federated sign-in forms involving payments or sign-in)'),
-                PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME => t('B (i). Cross-Origin Openers (Allow content to be framed - iframe)'),
-                PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP => t('B (ii). Cross-Origin Openers (Allow content to be opened in a pop-up)')
+                PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME => t('C (i). Cross-Origin Openers (Allow content to be framed - iframe)'),
+                PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP => t('C (ii). Cross-Origin Openers (Allow content to be opened in a pop-up)')
             ),
         );
 
