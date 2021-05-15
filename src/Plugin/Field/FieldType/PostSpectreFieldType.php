@@ -5,6 +5,7 @@ namespace Drupal\post_spectre\Plugin\Field\FieldType;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
+use Drupal\post_spectre\Constant\PostSpectreType;
 
 /**
  * Implements a field type for PostSpectre.
@@ -25,7 +26,7 @@ class PostSpectreFieldType extends FieldItemBase {
      */
     public static function defaultFieldSettings() {
         return [
-                'opt_out' => FALSE,
+                PostSpectreType::OPT_OUT => FALSE,
             ] + parent::defaultFieldSettings();
     }
 
@@ -35,11 +36,11 @@ class PostSpectreFieldType extends FieldItemBase {
     public static function schema(FieldStorageDefinitionInterface $field_definition) {
         return [
             'columns' => [
-                'opt_out' => [
+                PostSpectreType::OPT_OUT => [
                     'type' => 'text',
                     'not null' => FALSE,
                 ],
-                'post_spectre_type' => [
+                PostSpectreType::POST_SPECTRE_TYPE => [
                     'type' => 'text',
                     'not null' => FALSE,
                 ]
@@ -53,11 +54,11 @@ class PostSpectreFieldType extends FieldItemBase {
     public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
         $properties = [];
 
-        $properties['opt_out'] = DataDefinition::create('string')
+        $properties[PostSpectreType::OPT_OUT] = DataDefinition::create('string')
             ->setLabel(t('Opt-out from post spectre'))
             ->setRequired(FALSE);
 
-        $properties['post_spectre_type'] = DataDefinition::create('string')
+        $properties[PostSpectreType::POST_SPECTRE_TYPE] = DataDefinition::create('string')
             ->setLabel(t('Post spectre type secure'))
             ->setRequired(FALSE);
 
