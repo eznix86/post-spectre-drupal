@@ -2,6 +2,8 @@
 
 namespace Drupal\post_spectre\EventSubscriber;
 
+use Drupal;
+use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,16 +20,45 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
    */
   public function __construct() {}
 
-  /**
-   * Kernel response event handler.
-   *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
-   *   Response event.
-   */
+    /**
+     * Kernel response event handler.
+     *
+     * @param FilterResponseEvent $event
+     *   Response event.
+     * @throws Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+     * @throws Drupal\Component\Plugin\Exception\PluginNotFoundException
+     */
   public function onKernelResponse(FilterResponseEvent $event) {
+    // Load the default configurations.
+    $config = Drupal::config('post_spectre.settings');
+    $post_spectre_custom_field = $config->get('post_spectre.custom_field_name');
+
     $response = $event->getResponse();
     $request = $event->getRequest();
     $response = $this->addDefaultPostSpectreHeaders($response);
+
+    // Prevent pages like "edit", "revisions", etc from being redirected.
+    $is_node = $request->attributes->get('_route') == 'entity.node.canonical';
+    if (!$is_node) {
+      return;
+    }
+
+    // Retrieve current node id.
+    $current_node_id = (string) $request->attributes->get('node')->id();
+
+    $node_storage = Drupal::entityTypeManager()->getStorage('node');
+    /** @var Node $node */
+    $node = $node_storage->load($current_node_id);
+
+    if (!$node->hasField($post_spectre_custom_field)) {
+      return;
+    }
+
+    $optOut = (bool) $node->get($post_spectre_custom_field)->opt_out;
+
+    if ($optOut) {
+        return;
+    }
 
     $allow = $this->allowRequestWithFetchMetadata($request);
 
@@ -39,7 +70,8 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
     $event->setResponse($response);
   }
 
-  public function addDefaultPostSpectreHeaders(Response $response) {
+  public function addDefaultPostSpectreHeaders(Response $response): Response
+  {
       // Add default headers for documents for post spectre
       $response->setVary('Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User');
       $headers = [
