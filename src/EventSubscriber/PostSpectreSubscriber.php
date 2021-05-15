@@ -2,6 +2,8 @@
 
 namespace Drupal\post_spectre\EventSubscriber;
 
+use Drupal;
+use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,16 +20,44 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
    */
   public function __construct() {}
 
-  /**
-   * Kernel response event handler.
-   *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
-   *   Response event.
-   */
+    /**
+     * Kernel response event handler.
+     *
+     * @param FilterResponseEvent $event
+     *   Response event.
+     * @throws Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+     * @throws Drupal\Component\Plugin\Exception\PluginNotFoundException
+     */
   public function onKernelResponse(FilterResponseEvent $event) {
+    // Load the default configurations.
+    $config = Drupal::config('post_spectre.settings');
+    $post_spectre_custom_field = $config->get('post_spectre.custom_field_name');
+
     $response = $event->getResponse();
     $request = $event->getRequest();
-    $response = $this->addDefaultPostSpectreHeaders($response);
+
+    // Prevent pages like "edit", "revisions", etc from being redirected.
+    $is_node = $request->attributes->get('_route') == 'entity.node.canonical';
+    if (!$is_node) {
+      return;
+    }
+
+    // Retrieve current node id.
+    $current_node_id = (string) $request->attributes->get('node')->id();
+
+    $node_storage = Drupal::entityTypeManager()->getStorage('node');
+    /** @var Node $node */
+    $node = $node_storage->load($current_node_id);
+
+    if (!$node->hasField($post_spectre_custom_field)) {
+      return;
+    }
+
+    $optOut = (bool) $node->get($post_spectre_custom_field)->opt_out;
+
+    if ($optOut) {
+        return;
+    }
 
     $allow = $this->allowRequestWithFetchMetadata($request);
 
@@ -36,10 +66,29 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
         $response->setStatusCode(Response::HTTP_FORBIDDEN);
     }
 
+    $postSpectreType = $node->get($post_spectre_custom_field)->post_spectre_type;
+    $response = $this->addDefaultPostSpectreHeaders($response);
+
+    switch ($postSpectreType) {
+        case Drupal\post_spectre\Constant\PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME:
+            $response->headers->set('X-Frame-Options', 'ALLOWALL');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP:
+            $response->headers->set('Cross-Origin-Opener-Policy', 'unsafe-none');
+            $response->headers->set('X-Frame-Options', 'ALLOWALL');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::CROSS_ORIGIN_OPENERS:
+            $response->headers->set('Cross-Origin-Opener-Policy', 'unsafe-none');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW:
+            $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+    }
+
     $event->setResponse($response);
   }
 
-  public function addDefaultPostSpectreHeaders(Response $response) {
+  public function addDefaultPostSpectreHeaders(Response $response): Response
+  {
       // Add default headers for documents for post spectre
       $response->setVary('Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User');
       $headers = [
@@ -64,7 +113,6 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
   public function allowRequestWithFetchMetadata(Request $request): bool {
     $headers = $request->headers->all();
     $headerKeys = array_keys($request->headers->all());
-    //TODO: Exempt paths/endpoints meant to be served cross-origin.
 
     // Allow requests from browsers which don't send Fetch Metadata
     if (in_array('sec-fetch-site', $headerKeys)) {

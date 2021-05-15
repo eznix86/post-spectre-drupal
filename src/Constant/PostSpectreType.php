@@ -7,4 +7,6 @@ class PostSpectreType
     const CROSS_ORIGIN_OPENERS = 'coo';
     const CROSS_ORIGIN_OPENERS_IFRAME = 'coo_iframe';
     const CROSS_ORIGIN_OPENERS_POPUP = 'coo_popup';
+    const OPT_OUT = 'opt_out';
+    const POST_SPECTRE_TYPE = 'post_spectre_type';
 }
