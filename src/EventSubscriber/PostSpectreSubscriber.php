@@ -67,6 +67,7 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
     }
 
     $postSpectreType = $node->get($post_spectre_custom_field)->post_spectre_type;
+    // based on this configuration Drupal\post_spectre\Constant\PostSpectreType::DEFAULT
     $response = $this->addDefaultPostSpectreHeaders($response);
 
     switch ($postSpectreType) {
@@ -82,6 +83,14 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
             break;
         case Drupal\post_spectre\Constant\PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW:
             $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::FULL_ISOLATION:
+            $response->headers->set('Cross-Origin-Embedder-Policy', 'require-corp');
+            $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
+            break;
+        case Drupal\post_spectre\Constant\PostSpectreType::DEFAULT:
+        default:
+        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
     }
 
     $event->setResponse($response);

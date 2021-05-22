@@ -42,13 +42,16 @@ class PostSpectreFieldWidget extends WidgetBase implements WidgetInterface {
 
         $element[PostSpectreType::POST_SPECTRE_TYPE] = array(
             '#title' => $this->t('Cross Origin'),
+            '#description' => $this->t('Manage your level of isolation/cross-origin sharing'),
             '#type' => 'radios',
-            '#default_value' => isset($items[$delta]->post_spectre_type) ? $items[$delta]->post_spectre_type :  PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW,
+            '#default_value' => isset($items[$delta]->post_spectre_type) ? $items[$delta]->post_spectre_type :  PostSpectreType::DEFAULT,
             '#options' => array(
-                PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW => t('A. Open Cross-Origin Windows (Allow content to be opened in a new window)'),
-                PostSpectreType::CROSS_ORIGIN_OPENERS => t('B. Cross-Origin Openers (Allow Federated sign-in forms involving payments or sign-in)'),
-                PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME => t('C (i). Cross-Origin Openers (Allow content to be framed - iframe)'),
-                PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP => t('C (ii). Cross-Origin Openers (Allow content to be opened in a pop-up)')
+                PostSpectreType::DEFAULT => t('A. Same-Origin Only'),
+                PostSpectreType::FULL_ISOLATION => t('B. Same-Origin Only with full isolation (No assets with cross origin will be allowed)'),
+                PostSpectreType::OPEN_CROSS_ORIGIN_WINDOW => t('C. Open Cross-Origin Windows (Allow same-site window only)'),
+                PostSpectreType::CROSS_ORIGIN_OPENERS => t('D. Cross-Origin Openers (Allow cross-site window/tab sharing. Ex: Federated sign-in forms involving payments or sign-in (SSO))'),
+                PostSpectreType::CROSS_ORIGIN_OPENERS_IFRAME => t('E. Cross-Origin Openers (Allow cross-site content to be framed only. Ex: iframe)'),
+                PostSpectreType::CROSS_ORIGIN_OPENERS_POPUP => t('F. Cross-Origin Openers (Allow cross-site content to be framed and cross-site window/pop-up sharing)')
             ),
         );
 
