@@ -18,9 +18,9 @@ A Drupal module that implements a variety of security mechanisms recommended by 
 
 ## What is Post Spectre ?
 
-Spectre vulnerability happens when an attacker attempts to access data from the memory space. On the web, it can happen whenever you open a third party website as a pop-up or a new window or a third party displays your website in an iframe and shares same memory/context.
+The Spectre vulnerability occurs when an attacker attempts to access data in memory space. On the web, this can happen when you open a third-party website in a pop-up or new window, or when a third party displays your website in an iframe, and these sites share the same memory/context as your website without enhanced security.
 
-To restrict Spectre-like attacks, we implemented practical solution from [W3C specification](https://www.w3.org/TR/post-spectre-webdev/) built into this module.
+To mitigate Spectre attacks, we have implemented a practical solution from the [W3C specification](https://www.w3.org/TR/post-spectre-webdev/) built into this module.
 
 ## Installation
 * Download the module. [[Click here for latest version]](https://github.com/theArtechnology/post-spectre-drupal/archive/refs/tags/8.x-1.0.zip)
