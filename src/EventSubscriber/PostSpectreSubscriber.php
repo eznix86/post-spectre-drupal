@@ -31,6 +31,12 @@ class PostSpectreSubscriber implements EventSubscriberInterface {
   public function onKernelResponse(FilterResponseEvent $event) {
     // Load the default configurations.
     $config = Drupal::config('post_spectre.settings');
+    $optOutGlobally = $config->get(Drupal\post_spectre\Constant\PostSpectreType::OPT_OUT);
+
+    if ($optOutGlobally) {
+        return;
+    }
+
     $post_spectre_custom_field = $config->get('post_spectre.custom_field_name');
 
     $response = $event->getResponse();
