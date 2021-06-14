@@ -1,0 +1,3 @@
+administer post_spectre configuration:
+  title: 'Administer Post Spectre configuration'
+  restrict access: true
