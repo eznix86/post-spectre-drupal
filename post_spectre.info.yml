@@ -1,6 +1,6 @@
-name: post_spectre
+name: Post Specture
 type: module
-description: The description.
+description: A Drupal module that implements security mechanisms recommended by the W3C concerning defensive measures against Spectre attacks.
 package: Custom
 core: 8.x
 core_version_requirement: ^8 || ^9
