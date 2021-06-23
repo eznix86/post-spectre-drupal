@@ -23,7 +23,7 @@ The Spectre vulnerability occurs when an attacker attempts to access data in mem
 To mitigate Spectre attacks, we have implemented a practical solution from the [W3C specification](https://www.w3.org/TR/post-spectre-webdev/) built into this module.
 
 ## Installation
-* Download the module. [[Click here for latest version]](https://github.com/theArtechnology/post-spectre-drupal/archive/refs/tags/8.x-1.0.zip)
+* Download the module. [[Click here for latest version]](https://github.com/theArtechnology/post-spectre-drupal/archive/refs/tags/8.x-1.1.zip)
 
 * Install it as you normally would by going to **`Extend > Install new module > upload`** or by extracting the contents of the zip file to your **`drupal/modules`** folder and activating it via your drupal admin dashboard. More info on how to do this here: https://www.drupal.org/docs/extending-drupal/installing-modules
 
