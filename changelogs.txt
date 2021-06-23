@@ -1,0 +1,10 @@
+[8.x-1.1] - 2021-06-23
+Added
+- Added global opt-out
+- Added new headers
+
+[8.x-1.0] - 2021-05-19
+Added
+- Added headers for post spectre
+- Added database definitions for form
+- Added Rejection for cross origin requests, add default document headers
