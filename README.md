@@ -36,17 +36,17 @@ To mitigate Spectre attacks, we have implemented a practical solution from the [
 
 ### Features
 <p align="center">
-  <img src="images/features.gif" width="200px">
+  <img src="images/features.gif" width="540px">
 </p>
 
 ### Full isolation
 <p align="center">
-  <img src="images/full_isolated.gif" width="200px">
+  <img src="images/full_isolated.gif" width="540px">
 </p>
 
 ### Reverse Tabnabbing disabled
 <p align="center">
-  <img src="images/reverse_tabnabbing_disabled.gif" width="200px">
+  <img src="images/reverse_tabnabbing_disabled.gif" width="540px">
 </p>
 
 
