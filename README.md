@@ -32,7 +32,23 @@ To mitigate Spectre attacks, we have implemented a practical solution from the [
 
 * Click on **`Add field`** & select **`Post Spectre`** from the **`Select a field type`** dropdown list. Give it a label and hit save. On the next page you'll be able to configure some default settings then you'll be good to go.
 
-## Screenshots
+## Demo
+
+### Features
+<p align="center">
+  <img src="images/features.gif" width="200px">
+</p>
+
+### Full isolation
+<p align="center">
+  <img src="images/full_isolated.gif" width="200px">
+</p>
+
+### Reverse Tabnabbing disabled
+<p align="center">
+  <img src="images/reverse_tabnabbing_disabled.gif" width="200px">
+</p>
+
 
 ## Maintainers
 * [theArtechnology](https://github.com/theArtechnology)
